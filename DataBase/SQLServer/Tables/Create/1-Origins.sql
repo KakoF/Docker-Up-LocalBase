@@ -3,7 +3,7 @@ IF OBJECT_ID('[Origins].[Origins]') IS NULL
 BEGIN
 
 CREATE TABLE [Origins].[Origins] (
-		[Id] uniqueidentifier PRIMARY KEY,
+		[Id] uniqueidentifier PRIMARY KEY default newid() NOT NULL,
 		[Name] nvarchar(500) NOT NULL,
 		[Alias] nvarchar(200) NULL,
 	    [Type] SMALLINT NOT NULL,

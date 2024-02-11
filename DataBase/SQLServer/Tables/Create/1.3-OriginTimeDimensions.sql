@@ -1,9 +1,9 @@
 GO
-IF OBJECT_ID('[Origins].[OriginTimeDimensions]') IS NULL
-BEGIN
+
+IF OBJECT_ID ( '[Origins].[OriginTimeDimensions]' ) IS NULL BEGIN
 
 CREATE TABLE [Origins].[OriginTimeDimensions] (
-		[Id] uniqueidentifier PRIMARY KEY,
+		[Id] uniqueidentifier PRIMARY KEY default newid() NOT NULL,
 		[OriginId] uniqueidentifier NOT NULL,
 		[Dimension] nvarchar(100) NOT NULL,
 	    [Granularity] nvarchar(30) NOT NULL,
@@ -16,4 +16,3 @@ CREATE TABLE [Origins].[OriginTimeDimensions] (
 END
 ELSE
 	PRINT 'A Tabela [Origins].[OriginTimeDimensions] já existe'
-

@@ -3,24 +3,29 @@ version: "3.8"
 volumes:
   sqlserver_data:
 
+
 services:
   sqlServer:
-      image: mcr.microsoft.com/mssql/server:2019-latest
-      volumes:
-        - sqlserver_data:/var/opt/mssql
-      environment:
-        ACCEPT_EULA: Y
-        MSSQL_SA_PASSWORD: '!DataBasePassword'
-      ports:
-        - '1433:1433'
-      expose:
-        - '1433'
-      healthcheck:
-        test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P !DataBasePassword -Q 'SELECT 1' || exit 1"]
-        interval: 10s
-        retries: 10
-        start_period: 10s
-        timeout: 3s
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_SA_PASSWORD: '!DataBasePassword'
+    ports:
+      - '1433:1433'
+    expose:
+      - '1433'
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P !DataBasePassword -Q 'SELECT 1' || exit 1"
+        ]
+      interval: 10s
+      retries: 10
+      start_period: 10s
+      timeout: 3s
   sqlServer.configurator:
     image: mcr.microsoft.com/mssql/server:2019-latest
     volumes:
@@ -29,10 +34,7 @@ services:
       sqlServer:
         condition: service_healthy
     command: >
-      bash -c '
-      /opt/mssql-tools/bin/sqlcmd -S sqlServer -U sa -P !DataBasePassword -d master -i docker-entrypoint-initdb.d/script.sql;
-      echo "All done!";
-      '
+      bash -c ' /opt/mssql-tools/bin/sqlcmd -S sqlServer -U sa -P !DataBasePassword -d master -i docker-entrypoint-initdb.d/script.sql; echo "All done!"; '
   postgres:
     image: postgres
     volumes:
@@ -64,6 +66,6 @@ services:
     networks:
       - postgres-network
 
-networks: 
+networks:
   postgres-network:
     driver: bridge

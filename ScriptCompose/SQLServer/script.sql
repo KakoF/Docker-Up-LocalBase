@@ -1,20 +1,18 @@
 GO
-IF NOT EXISTS (SELECT TOP 1 1 FROM SYS.SCHEMAS WHERE Name = 'Origins')
-BEGIN
-	EXEC ('CREATE SCHEMA Origins')
-	PRINT 'Schema Origins criado'
-END
-ELSE
-	PRINT 'O schema Origins ja existe'
-GO
 
+IF NOT EXISTS (
+    SELECT TOP 1 1
+    FROM SYS.SCHEMAS
+    WHERE
+        Name = 'Origins'
+) BEGIN EXEC ('CREATE SCHEMA Origins') PRINT 'Schema Origins criado' END ELSE PRINT 'O schema Origins ja existe' GO
 
 GO
-IF OBJECT_ID('[Origins].[Origins]') IS NULL
-BEGIN
+
+IF OBJECT_ID ('[Origins].[Origins]') IS NULL BEGIN
 
 CREATE TABLE [Origins].[Origins] (
-		[Id] uniqueidentifier PRIMARY KEY,
+		[Id] uniqueidentifier PRIMARY KEY default newid() NOT NULL,
 		[Name] nvarchar(500) NOT NULL,
 		[Alias] nvarchar(200) NULL,
 	    [Type] SMALLINT NOT NULL,
@@ -34,11 +32,11 @@ ELSE
 
 
 GO
-IF OBJECT_ID('[Origins].[OriginDimensions]') IS NULL
-BEGIN
+
+IF OBJECT_ID ( '[Origins].[OriginDimensions]' ) IS NULL BEGIN
 
 CREATE TABLE [Origins].[OriginDimensions] (
-		[Id] uniqueidentifier PRIMARY KEY,
+		[Id] uniqueidentifier PRIMARY KEY default newid() NOT NULL,
 		[OriginId] uniqueidentifier NOT NULL,
 		[Key] nvarchar(100) NOT NULL,
 	    [Dimensions] nvarchar(100) NOT NULL,
@@ -53,11 +51,11 @@ ELSE
 
 
 GO
-IF OBJECT_ID('[Origins].[OriginSqlConnection]') IS NULL
-BEGIN
+
+IF OBJECT_ID ( '[Origins].[OriginSqlConnection]' ) IS NULL BEGIN
 
 CREATE TABLE [Origins].[OriginSqlConnection] (
-		[Id] uniqueidentifier PRIMARY KEY,
+		[Id] uniqueidentifier PRIMARY KEY default newid() NOT NULL,
 		[OriginId] uniqueidentifier NOT NULL,
 		[ServerName] nvarchar(500) NOT NULL,
 	    [DatabaseName] nvarchar(500) NOT NULL,
@@ -73,11 +71,11 @@ ELSE
 
 
 GO
-IF OBJECT_ID('[Origins].[OriginTimeDimensions]') IS NULL
-BEGIN
+
+IF OBJECT_ID ( '[Origins].[OriginTimeDimensions]' ) IS NULL BEGIN
 
 CREATE TABLE [Origins].[OriginTimeDimensions] (
-		[Id] uniqueidentifier PRIMARY KEY,
+		[Id] uniqueidentifier PRIMARY KEY default newid() NOT NULL,
 		[OriginId] uniqueidentifier NOT NULL,
 		[Dimension] nvarchar(100) NOT NULL,
 	    [Granularity] nvarchar(30) NOT NULL,
@@ -90,4 +88,3 @@ CREATE TABLE [Origins].[OriginTimeDimensions] (
 END
 ELSE
 	PRINT 'A Tabela [Origins].[OriginTimeDimensions] já existe'
-

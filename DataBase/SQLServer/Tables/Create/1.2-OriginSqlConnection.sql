@@ -1,9 +1,9 @@
 GO
-IF OBJECT_ID('[Origins].[OriginSqlConnection]') IS NULL
-BEGIN
+
+IF OBJECT_ID ( '[Origins].[OriginSqlConnection]' ) IS NULL BEGIN
 
 CREATE TABLE [Origins].[OriginSqlConnection] (
-		[Id] uniqueidentifier PRIMARY KEY,
+		[Id] uniqueidentifier PRIMARY KEY default newid() NOT NULL,
 		[OriginId] uniqueidentifier NOT NULL,
 		[ServerName] nvarchar(500) NOT NULL,
 	    [DatabaseName] nvarchar(500) NOT NULL,
@@ -16,4 +16,3 @@ CREATE TABLE [Origins].[OriginSqlConnection] (
 END
 ELSE
 	PRINT 'A Tabela [Origins].[OriginSqlConnection] já existe'
-
